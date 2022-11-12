@@ -22,7 +22,7 @@ class BlackMarketRate(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     buy = Column(Float)
-    buy = Column(Float)
+    sell = Column(Float)
     time = Column(DateTime)
     currency_id = Column(Integer, ForeignKey("currencies.id"))
 
@@ -34,7 +34,7 @@ class OfficialMarketRate(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     buy = Column(Float)
-    buy = Column(Float)
+    sell = Column(Float)
     time = Column(DateTime)
     currency_id = Column(Integer, ForeignKey("currencies.id"))
 
