@@ -1,3 +1,5 @@
+import hashlib
+
 from sqlalchemy.orm import Session
 
 from . import models, schemas
@@ -69,3 +71,27 @@ def create_official_market_rates(db: Session, item: schemas.OfficialMarketRateCr
     db.commit()
     db.refresh(db_official_market_rate)
     return db_official_market_rate
+
+
+def get_admin(db: Session, admin_id: int):
+    return db.query(models.Admin).filter(models.Admin.id == admin_id).first()
+
+
+def get_admin_by_email(db: Session, email: str):
+    return db.query(models.Admin).filter(models.Admin.email == email).first()
+
+
+def get_admins(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Admin).offset(skip).limit(limit).all()
+
+
+def create_user(db: Session, admin: schemas.AdminCreate):
+    md5 = hashlib.md5()
+    md5.update(admin.password)
+    hashed_password = md5.hexdigest()
+    db_admin = models.Admin(
+        email=admin.email, password=hashed_password)
+    db.add(db_admin)
+    db.commit()
+    db.refresh(db_admin)
+    return db_admin

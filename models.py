@@ -39,3 +39,12 @@ class OfficialMarketRate(Base):
     currency_id = Column(Integer, ForeignKey("currencies.id"))
 
     currency = relationship("Currency", back_populates="official_market_rates")
+
+
+class Admin(Base):
+    __tablename__ = "admins"
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True, index=True)
+    password = Column(String)
+    is_active = Column(Boolean, default=True)

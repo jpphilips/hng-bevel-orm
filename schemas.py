@@ -57,3 +57,19 @@ class Currency(CurrencyBase):
 
     class Config:
         orm_mode = True
+
+
+class AdminBase(BaseModel):
+    email: str
+
+
+class AdminCreate(AdminBase):
+    password: str
+
+
+class Admin(AdminBase):
+    id: int
+    is_active: bool
+
+    class Config:
+        orm_mode = True
