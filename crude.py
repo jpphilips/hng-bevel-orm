@@ -37,40 +37,20 @@ def create_currency(db: Session, currency: schemas.CurrencyCreate):
     return db_currency
 
 
-def get_black_market_rates(db: Session, skip: int = 0, limit: int = 24):
-    return db.query(models.BlackMarketRate).offset(skip).limit(limit).all()
+def get_rates(db: Session, skip: int = 0, limit: int = 24):
+    return db.query(models.Rate).offset(skip).limit(limit).all()
 
 
-def get_recent_black_market_rates(db: Session):
-    return db.query(models.BlackMarketRate).filter(BlackMarketRate.id ==
-                                                   db.query(func.max(models.BlackMarketRate.id)))
+def get_recent_rates(db: Session):
+    return db.query(models.Rate).filter(Rate.id == db.query(func.max(models.Rate.id)))
 
 
-def create_black_market_rates(db: Session, item: schemas.BlackMarketRateCreate, currency_id: int):
-    db_black_market_rate = models.BlackMarketRate(
-        **item.dict(), currency_id=currency_id)
-    db.add(db_black_market_rate)
+def create_rates(db: Session, item: schemas.RateCreate, currency_id: int):
+    db_rate = models.Rate(**item.dict(), currency_id=currency_id)
+    db.add(db_rate)
     db.commit()
-    db.refresh(db_black_market_rate)
-    return db_black_market_rate
-
-
-def get_official_market_rates(db: Session, skip: int = 0, limit: int = 24):
-    return db.query(models.OfficialMarketRate).offset(skip).limit(limit).all()
-
-
-def get_recent_official_market_rates():
-    return db.query(models.OfficialMarketRate).filter(OfficialMarketRate.id ==
-                                                      db.query(func.max(models.OfficialMarketRate.id)))
-
-
-def create_official_market_rates(db: Session, item: schemas.OfficialMarketRateCreate, currency_id: int):
-    db_official_market_rate = models.OfficialMarketRate(
-        **item.dict(), currency_id=currency_id)
-    db.add(db_official_market_rate)
-    db.commit()
-    db.refresh(db_official_market_rate)
-    return db_official_market_rate
+    db.refresh(db_rate)
+    return db_rate
 
 
 def get_admin(db: Session, admin_id: int):

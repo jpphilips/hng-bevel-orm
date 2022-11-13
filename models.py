@@ -17,28 +17,18 @@ class Currency(Base):
         "OfficialMarketRate", back_populates="currency")
 
 
-class BlackMarketRate(Base):
-    __tablename__ = "black_market_rates"
+class Rate(Base):
+    __tablename__ = "rates"
 
     id = Column(Integer, primary_key=True, index=True)
-    buy = Column(Float)
-    sell = Column(Float)
-    time = Column(DateTime)
+    official_buy = Column(Float)
+    official_sell = Column(Float)
+    parallel_buy = Column(Float)
+    parallel_sell = Column(Float)
+    last_updated = Column(DateTime)
     currency_id = Column(Integer, ForeignKey("currencies.id"))
 
-    currency = relationship("Currency", back_populates="black_market_rates")
-
-
-class OfficialMarketRate(Base):
-    __tablename__ = "official_market_rates"
-
-    id = Column(Integer, primary_key=True, index=True)
-    buy = Column(Float)
-    sell = Column(Float)
-    time = Column(DateTime)
-    currency_id = Column(Integer, ForeignKey("currencies.id"))
-
-    currency = relationship("Currency", back_populates="official_market_rates")
+    currency = relationship("Currency", back_populates="rates")
 
 
 class Admin(Base):
